@@ -29,11 +29,10 @@ public class ProjetoCacaTesouro {
 
         if (escolha == 2) {
             animacaoSaida();
-        } else {
+        } else if (escolha == 1) {
             definirDificuldade();
-        }
-        if (escolha != 1 && escolha != 2) {
-            System.out.println("Opção Invalida! Digite novamente\n");
+        } else {
+            System.out.println("Opção inválida! Digite novamente\n");
             inicializarJogo();
         }
     }
@@ -42,8 +41,8 @@ public class ProjetoCacaTesouro {
 
         int escolhaDificuldade;
         System.out.println("\nEscolha a dificuldade do jogo: " +
-                "\n[1] Fácil (10 tentativas)" +
-                "\n[2] Médio (8 tentativas)" +
+                "\n[1] Fácil   (10 tentativas)" +
+                "\n[2] Médio   (8 tentativas)" +
                 "\n[3] Difícil (6 tentativas)");
         System.out.printf("\nEscolha: ");
         escolhaDificuldade = sc.nextInt();
@@ -69,7 +68,89 @@ public class ProjetoCacaTesouro {
     }
 
     private void comecaJogo(int linhas, int colunas, int tentativasMax) {
-        
+
+        mapa = new char[linhas][colunas];
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                mapa[i][j] = '-';
+            }
+        }
+
+        linhaTesouro = random.nextInt(linhas);
+        colunaTesouro = random.nextInt(colunas);
+
+        boolean encontrou = false;
+
+        for (int tentativa = 1; tentativa <= tentativasMax; tentativa++) {
+            System.out.println("\nTentativa " + tentativa + " de " + tentativasMax);
+            mostrarMapa(false);
+
+            System.out.print("Digite a linha (0 a " + (linhas - 1) + "): ");
+            int linha = sc.nextInt();
+
+            System.out.print("Digite a coluna (0 a " + (colunas - 1) + "): ");
+            int coluna = sc.nextInt();
+
+            // valida coordenadas
+            if (linha < 0 || linha >= linhas || coluna < 0 || coluna >= colunas) {
+                System.out.println("Coordenadas inválidas! Tente novamente.");
+                tentativa--; // não conta tentativa errada
+                continue;
+            }
+
+            // verifica se achou o tesouro
+            if (linha == linhaTesouro && coluna == colunaTesouro) {
+                mapa[linha][coluna] = 'T';
+                encontrou = true;
+                break;
+            } else {
+                mapa[linha][coluna] = 'X';
+                System.out.println("Nada aqui... tente novamente!");
+            }
+        }
+
+        // resultado final do jogo
+        if (encontrou) {
+            System.out.println("\nVocê encontrou o tesouro!");
+        } else {
+            System.out.println("\nFim de jogo! Suas tentativas acabaram.");
+        }
+
+        System.out.println("O tesouro estava em: (" + linhaTesouro + ", " + colunaTesouro + ")");
+        mostrarMapa(true);
+        continuarJogo(); // aqui é onde o jogo realmente para ou recomeça
+    }
+
+    private void continuarJogo() {
+
+        int entradaContinuacao;
+        System.out.println("\nDeseja continuar o jogo?" +
+                "\n[1] Sim" +
+                "\n[2] Não");
+        System.out.printf("\nEntrada: ");
+        entradaContinuacao = sc.nextInt();
+
+        if (entradaContinuacao == 1) {
+            inicializarJogo();
+        } else if (entradaContinuacao == 2) {
+            animacaoSaida();
+        } else {
+            System.out.println("Opção inválida! Digite novamente.\n");
+            continuarJogo();
+        }
+    }
+
+    private void mostrarMapa(boolean revelarTesouro) {
+        System.out.println("\nMapa:");
+        for (int i = 0; i < mapa.length; i++) {
+            for (int j = 0; j < mapa[i].length; j++) {
+                if (revelarTesouro && i == linhaTesouro && j == colunaTesouro)
+                    System.out.print("T ");
+                else
+                    System.out.print(mapa[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
     private void animacaoSaida() {
@@ -81,11 +162,11 @@ public class ProjetoCacaTesouro {
                 Thread.sleep(300);
                 System.out.print("\rSaindo...");
                 Thread.sleep(300);
-                System.out.print("\rSaindo   "); // apaga os pontos
+                System.out.print("\rSaindo   ");
                 Thread.sleep(300);
             }
+            System.out.println("\nAté logo!");
         } catch (InterruptedException ignored) {
-            // ignora
         }
     }
 }
