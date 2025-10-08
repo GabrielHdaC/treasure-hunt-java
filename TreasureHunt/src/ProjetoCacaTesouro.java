@@ -24,7 +24,7 @@ public class ProjetoCacaTesouro {
         System.out.println("Bem-vindo(a) ao caça ao Tesouro");
         System.out.println("[1] Iniciar" +
                 "\n[2] Sair");
-        System.out.printf("\nEscolha: ");
+        System.out.printf("\nEntrada: ");
         escolha = sc.nextInt();
 
         if (escolha == 2) {
@@ -44,7 +44,7 @@ public class ProjetoCacaTesouro {
                 "\n[1] Fácil   (10 tentativas)" +
                 "\n[2] Médio   (8 tentativas)" +
                 "\n[3] Difícil (6 tentativas)");
-        System.out.printf("\nEscolha: ");
+        System.out.printf("\nEntrada: ");
         escolhaDificuldade = sc.nextInt();
 
         switch (escolhaDificuldade) {
@@ -131,7 +131,7 @@ public class ProjetoCacaTesouro {
         entradaContinuacao = sc.nextInt();
 
         if (entradaContinuacao == 1) {
-            inicializarJogo();
+            definirDificuldade();
         } else if (entradaContinuacao == 2) {
             animacaoSaida();
         } else {
