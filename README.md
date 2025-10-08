@@ -41,4 +41,4 @@ Feito para praticar **lógica de programação**, **uso de matrizes (arrays bidi
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/<teu-usuario>/<teu-repositorio>.git
+   https://github.com/GabrielHdaC/treasure-hunt-java.git
