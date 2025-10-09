@@ -114,9 +114,9 @@ public class ProjetoCacaTesouro {
         mostrarMapa(true);
 
         if (encontrou) {
-            System.out.println("\n💎💎💎 VOCÊ ENCONTROU O TESOURO!!! 💎💎💎");
+            System.out.println("\nVOCÊ ENCONTROU O TESOURO!!!");
         } else {
-            System.out.println("\n😢 Fim de jogo! Suas tentativas acabaram.");
+            System.out.println("\nFim de jogo! Suas tentativas acabaram.");
             System.out.println("O tesouro estava em: (" + linhaTesouro + ", " + colunaTesouro + ")");
         }
 
@@ -148,7 +148,7 @@ public class ProjetoCacaTesouro {
         for (int i = 0; i < linhas; i++) {
             for (int j = 0; j < colunas; j++) {
                 if (revelarTesouro && i == linhaTesouro && j == colunaTesouro && mapa[i][j] != 'T')
-                    System.out.print("💎 ");
+                    System.out.print("T ");
                 else
                     System.out.print(mapa[i][j] + " ");
             }
