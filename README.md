@@ -20,8 +20,8 @@ Feito para praticar **lógica de programação**, **uso de matrizes (arrays bidi
 - Menu inicial (Iniciar, Sair e escolha de dificuldade)  
 - Dificuldades: Fácil, Médio e Difícil  
 - Controle de tentativas restantes  
-- Feedback visual no mapa (`X` para erro, `_` para posições não tentadas)  
-- Animações de texto simples (Carregando..., Saindo...)  
+- Feedback visual no mapa (`X` para erro, `_` para posições não tentadas,`T` para o lugar do Tesouro )  
+- Animação de texto simples (Saindo...)  
 - Tesouro oculto até o final do jogo  
 
 ---
