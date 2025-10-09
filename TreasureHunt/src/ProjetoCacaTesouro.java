@@ -5,7 +5,6 @@ public class ProjetoCacaTesouro {
     Scanner sc = new Scanner(System.in);
     Random random = new Random();
 
-    int nivel;
     int linhas, colunas, tentativasMax;
     char[][] mapa;
     int linhaTesouro, colunaTesouro;
@@ -19,62 +18,56 @@ public class ProjetoCacaTesouro {
     }
 
     public void inicializarJogo() {
+        while (true) {
+            System.out.println("\n=== CAÇA AO TESOURO ===");
+            System.out.println("[1] Iniciar");
+            System.out.println("[2] Sair");
+            System.out.print("\nEntrada: ");
+            int escolha = sc.nextInt();
 
-        int escolha;
-        System.out.println("Bem-vindo(a) ao caça ao Tesouro");
-        System.out.println("[1] Iniciar" +
-                "\n[2] Sair");
-        System.out.printf("\nEntrada: ");
-        escolha = sc.nextInt();
-
-        if (escolha == 2) {
-            animacaoSaida();
-        } else if (escolha == 1) {
-            definirDificuldade();
-        } else {
-            System.out.println("Opção inválida! Digite novamente\n");
-            inicializarJogo();
+            if (escolha == 1) {
+                definirDificuldade();
+                break;
+            } else if (escolha == 2) {
+                animacaoSaida();
+                break;
+            } else {
+                System.out.println("Opção inválida! Tente novamente.\n");
+            }
         }
     }
 
-    public void definirDificuldade() {
+    private void definirDificuldade() {
+        while (true) {
+            System.out.println("\nEscolha a dificuldade:");
+            System.out.println("[1] Fácil   (5x5, 10 tentativas)");
+            System.out.println("[2] Médio   (7x7, 8 tentativas)");
+            System.out.println("[3] Difícil (10x10, 6 tentativas)");
+            System.out.print("\nEntrada: ");
+            int escolha = sc.nextInt();
 
-        int escolhaDificuldade;
-        System.out.println("\nEscolha a dificuldade do jogo: " +
-                "\n[1] Fácil   (10 tentativas)" +
-                "\n[2] Médio   (8 tentativas)" +
-                "\n[3] Difícil (6 tentativas)");
-        System.out.printf("\nEntrada: ");
-        escolhaDificuldade = sc.nextInt();
-
-        switch (escolhaDificuldade) {
-            case 1:
-                comecaJogo(5, 5, 10);
-                break;
-
-            case 2:
-                comecaJogo(7, 7, 8);
-                break;
-
-            case 3:
-                comecaJogo(10, 10, 6);
-                break;
-
-            default:
-                System.out.println("Opção Inválida! Escolha novamente a opção");
-                definirDificuldade();
-                break;
+            switch (escolha) {
+                case 1 -> comecaJogo(5, 5, 10);
+                case 2 -> comecaJogo(7, 7, 8);
+                case 3 -> comecaJogo(10, 10, 6);
+                default -> {
+                    System.out.println("Opção inválida! Escolha novamente.\n");
+                    continue;
+                }
+            }
+            break;
         }
     }
 
     private void comecaJogo(int linhas, int colunas, int tentativasMax) {
+        this.linhas = linhas;
+        this.colunas = colunas;
+        this.tentativasMax = tentativasMax;
 
         mapa = new char[linhas][colunas];
-        for (int i = 0; i < linhas; i++) {
-            for (int j = 0; j < colunas; j++) {
+        for (int i = 0; i < linhas; i++)
+            for (int j = 0; j < colunas; j++)
                 mapa[i][j] = '-';
-            }
-        }
 
         linhaTesouro = random.nextInt(linhas);
         colunaTesouro = random.nextInt(colunas);
@@ -82,6 +75,7 @@ public class ProjetoCacaTesouro {
         boolean encontrou = false;
 
         for (int tentativa = 1; tentativa <= tentativasMax; tentativa++) {
+            limparTela();
             System.out.println("\nTentativa " + tentativa + " de " + tentativasMax);
             mostrarMapa(false);
 
@@ -91,14 +85,20 @@ public class ProjetoCacaTesouro {
             System.out.print("Digite a coluna (0 a " + (colunas - 1) + "): ");
             int coluna = sc.nextInt();
 
-            // valida coordenadas
             if (linha < 0 || linha >= linhas || coluna < 0 || coluna >= colunas) {
                 System.out.println("Coordenadas inválidas! Tente novamente.");
-                tentativa--; // não conta tentativa errada
+                tentativa--;
+                pausar();
                 continue;
             }
 
-            // verifica se achou o tesouro
+            if (mapa[linha][coluna] == 'X') {
+                System.out.println("Você já tentou aqui! Escolha outro local.");
+                tentativa--;
+                pausar();
+                continue;
+            }
+
             if (linha == linhaTesouro && coluna == colunaTesouro) {
                 mapa[linha][coluna] = 'T';
                 encontrou = true;
@@ -106,46 +106,49 @@ public class ProjetoCacaTesouro {
             } else {
                 mapa[linha][coluna] = 'X';
                 System.out.println("Nada aqui... tente novamente!");
+                pausar();
             }
         }
 
-        // resultado final do jogo
+        limparTela();
+        mostrarMapa(true);
+
         if (encontrou) {
-            System.out.println("\nVocê encontrou o tesouro!");
+            System.out.println("\n💎💎💎 VOCÊ ENCONTROU O TESOURO!!! 💎💎💎");
         } else {
-            System.out.println("\nFim de jogo! Suas tentativas acabaram.");
+            System.out.println("\n😢 Fim de jogo! Suas tentativas acabaram.");
+            System.out.println("O tesouro estava em: (" + linhaTesouro + ", " + colunaTesouro + ")");
         }
 
-        System.out.println("O tesouro estava em: (" + linhaTesouro + ", " + colunaTesouro + ")");
-        mostrarMapa(true);
-        continuarJogo(); // aqui é onde o jogo realmente para ou recomeça
+        continuarJogo();
     }
 
     private void continuarJogo() {
+        while (true) {
+            System.out.println("\nDeseja jogar novamente?");
+            System.out.println("[1] Sim");
+            System.out.println("[2] Não");
+            System.out.print("\nEntrada: ");
+            int escolha = sc.nextInt();
 
-        int entradaContinuacao;
-        System.out.println("\nDeseja continuar o jogo?" +
-                "\n[1] Sim" +
-                "\n[2] Não");
-        System.out.printf("\nEntrada: ");
-        entradaContinuacao = sc.nextInt();
-
-        if (entradaContinuacao == 1) {
-            definirDificuldade();
-        } else if (entradaContinuacao == 2) {
-            animacaoSaida();
-        } else {
-            System.out.println("Opção inválida! Digite novamente.\n");
-            continuarJogo();
+            if (escolha == 1) {
+                definirDificuldade();
+                break;
+            } else if (escolha == 2) {
+                animacaoSaida();
+                break;
+            } else {
+                System.out.println("Opção inválida! Digite novamente.\n");
+            }
         }
     }
 
     private void mostrarMapa(boolean revelarTesouro) {
         System.out.println("\nMapa:");
-        for (int i = 0; i < mapa.length; i++) {
-            for (int j = 0; j < mapa[i].length; j++) {
-                if (revelarTesouro && i == linhaTesouro && j == colunaTesouro)
-                    System.out.print("T ");
+        for (int i = 0; i < linhas; i++) {
+            for (int j = 0; j < colunas; j++) {
+                if (revelarTesouro && i == linhaTesouro && j == colunaTesouro && mapa[i][j] != 'T')
+                    System.out.print("💎 ");
                 else
                     System.out.print(mapa[i][j] + " ");
             }
@@ -157,16 +160,26 @@ public class ProjetoCacaTesouro {
         try {
             for (int i = 0; i < 3; i++) {
                 System.out.print("\rSaindo.  ");
-                Thread.sleep(300);
+                Thread.sleep(250);
                 System.out.print("\rSaindo.. ");
-                Thread.sleep(300);
+                Thread.sleep(250);
                 System.out.print("\rSaindo...");
-                Thread.sleep(300);
+                Thread.sleep(250);
                 System.out.print("\rSaindo   ");
-                Thread.sleep(300);
+                Thread.sleep(250);
             }
             System.out.println("\nAté logo!");
-        } catch (InterruptedException ignored) {
-        }
+        } catch (InterruptedException ignored) {}
+    }
+
+    private void limparTela() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    private void pausar() {
+        try {
+            Thread.sleep(800);
+        } catch (InterruptedException ignored) {}
     }
 }
