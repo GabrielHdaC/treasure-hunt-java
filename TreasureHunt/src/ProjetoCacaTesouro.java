@@ -75,7 +75,6 @@ public class ProjetoCacaTesouro {
         boolean encontrou = false;
 
         for (int tentativa = 1; tentativa <= tentativasMax; tentativa++) {
-            limparTela();
             System.out.println("\nTentativa " + tentativa + " de " + tentativasMax);
             mostrarMapa(false);
 
@@ -88,14 +87,12 @@ public class ProjetoCacaTesouro {
             if (linha < 0 || linha >= linhas || coluna < 0 || coluna >= colunas) {
                 System.out.println("Coordenadas inválidas! Tente novamente.");
                 tentativa--;
-                pausar();
                 continue;
             }
 
             if (mapa[linha][coluna] == 'X') {
                 System.out.println("Você já tentou aqui! Escolha outro local.");
                 tentativa--;
-                pausar();
                 continue;
             }
 
@@ -106,11 +103,10 @@ public class ProjetoCacaTesouro {
             } else {
                 mapa[linha][coluna] = 'X';
                 System.out.println("Nada aqui... tente novamente!");
-                pausar();
             }
         }
 
-        limparTela();
+        System.out.println();
         mostrarMapa(true);
 
         if (encontrou) {
@@ -169,17 +165,6 @@ public class ProjetoCacaTesouro {
                 Thread.sleep(250);
             }
             System.out.println("\nAté logo!");
-        } catch (InterruptedException ignored) {}
-    }
-
-    private void limparTela() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-    private void pausar() {
-        try {
-            Thread.sleep(800);
         } catch (InterruptedException ignored) {}
     }
 }
